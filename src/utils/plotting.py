@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from statsmodels.graphics.tsaplots import plot_acf
 
 def plot_price(data, return_column = 'logprice'):
     """
@@ -64,4 +65,13 @@ def plot_boxplot(data, column='log_return'):
     plt.title(f'Box Plot of {column}')
     plt.xlabel(column)
     plt.grid(True)
+    plt.show()
+
+def plot_autocorrelation(data, column, lags=20):
+    """
+    Trace le graphique d'autocorrélation des log-returns.
+    """
+    plt.figure(figsize=(10, 6))
+    plot_acf(data[column].dropna(), lags=lags)
+    plt.title(f"Autocorrelation of {column}")
     plt.show()

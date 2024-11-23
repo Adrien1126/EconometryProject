@@ -1,0 +1,26 @@
+from statsmodels.tsa.stattools import adfuller
+
+def adf_test(series):
+    result = adfuller(series, autolag='AIC')
+    print(f"ADF Statistic: {result[0]}")
+    print(f"p-value: {result[1]}")
+    for key, value in result[4].items():
+        print(f"Critical Value ({key}): {value}")
+    if result[1] <= 0.05:
+        print("Conclusion: The series is stationary (reject H0).")
+    else:
+        print("Conclusion: The series is not stationary (fail to reject H0).")
+
+def kpss_test(series):
+    result = kpss(series, regression='c')
+    print(f"KPSS Statistic: {result[0]}")
+    print(f"p-value: {result[1]}")
+    for key, value in result[3].items():
+        print(f"Critical Value ({key}): {value}")
+    if result[1] > 0.05:
+        print("Conclusion: The series is stationary (fail to reject H0).")
+    else:
+        print("Conclusion: The series is not stationary (reject H0).")
+
+
+
