@@ -132,24 +132,23 @@ def calculate_daily_mean_returns(data, day_column='day', return_column='compound
 
 def calculate_volatility(data, return_column='daily_mean_return'):
     """
-    Calcule la volatilité journalière, mensuelle et annualisée des rendements.
+    Calculate daily, monthly, and annualized volatility of returns.
     
     Args:
-        data (DataFrame): Le DataFrame contenant les rendements journaliers.
-        return_column (str): Le nom de la colonne contenant les rendements journaliers.
+        data (DataFrame): DataFrame containing daily returns.
+        return_column (str): Column name for daily returns.
         
     Returns:
-        dict: Un dictionnaire contenant les volatilités journalière, mensuelle et annualisée.
+        dict: Dictionary with daily, monthly, and annualized volatilities.
     """
-    # Calcul de la volatilité journalière (écart-type des rendements journaliers)
+    # Calculate daily volatility (standard deviation of daily returns)
     daily_volatility = data[return_column].std()
 
-    # Calcul de la volatilité annualisée (en supposant environ 252 jours de trading par an)
+    # Calculate annualized volatility (assuming 252 trading days per year)
     annualized_volatility = daily_volatility * np.sqrt(252)
     
-    # Calcul de la volatilité mensuelle
-    monthly_volatility = daily_volatility / np.sqrt(12)
-    
+    # Calculate monthly volatility (assuming 21 trading days per month)
+    monthly_volatility = daily_volatility * np.sqrt(21)
     
     return {
         'daily_volatility': daily_volatility,
