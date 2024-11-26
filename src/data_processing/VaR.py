@@ -1,22 +1,31 @@
 import numpy as np
+from scipy.stats import norm
 import matplotlib.pyplot as plt
 
-def empirical_var(data, alpha):
+def empirical_var(data, alpha, isnormal=False):
     """
-    Estimate VaR using the empirical quantile method.
+    Estimate VaR using either the empirical quantile method or the normal distribution.
 
     Args:
         data (array-like): The historical returns data.
         alpha (float): The confidence level (e.g., 0.99 for 99%).
+        isnormal (bool): If True, assume a normal distribution to compute VaR.
 
     Returns:
         float: VaR estimate.
     """
-    sorted_data = np.sort(data)
-    n = len(data)
-    m = int(np.floor(n * alpha))  # Compute the rank m
-    return sorted_data[m]
-
+    if isnormal:
+        # Compute VaR for normal distribution
+        mean = np.mean(data)
+        std_dev = np.std(data)
+        z = norm.ppf(1 - alpha)  # z-score for the confidence level
+        return mean + z * std_dev
+    else:
+        # Compute empirical quantile VaR
+        sorted_data = np.sort(data)
+        n = len(data)
+        m = int(np.floor(n * (1 - alpha)))  # Compute the rank m for 1 - alpha
+        return sorted_data[m]
 
 def hill_estimator(data, threshold):
     """
